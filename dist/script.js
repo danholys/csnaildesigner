@@ -1,26 +1,20 @@
-const dialog = document.querySelector('#booking-dialog');
-const openButton = document.querySelector('#open-booking');
-const form = document.querySelector('#booking-form');
-const status = document.querySelector('.form-status');
+const filters = [...document.querySelectorAll('.filter-chip')];
+const cards = [...document.querySelectorAll('.service-card')];
+filters.forEach(button => button.addEventListener('click', () => {
+  const category = button.dataset.filter;
+  filters.forEach(filter => {
+    const active = filter === button;
+    filter.classList.toggle('active', active);
+    filter.setAttribute('aria-selected', String(active));
+  });
+  cards.forEach(card => { card.hidden = category !== 'todos' && card.dataset.category !== category; });
+}));
 
-openButton.addEventListener('click', () => {
-  status.textContent = '';
-  dialog.showModal();
-});
-dialog.addEventListener('click', event => {
-  if (event.target === dialog) dialog.close();
-});
-form.addEventListener('submit', async event => {
-  event.preventDefault();
-  const data = new FormData(form);
-  const message = `Olá! Meu nome é ${data.get('name')} e gostaria de agendar ${data.get('service')}${data.get('day') ? `, de preferência ${data.get('day')}` : ''}.`;
-  try {
-    await navigator.clipboard.writeText(message);
-    status.textContent = 'Pedido copiado! Agora é só colar e enviar pelo canal de atendimento do estúdio.';
-  } catch {
-    status.textContent = message;
-  }
-});
+document.querySelectorAll('.select-service').forEach(button => button.addEventListener('click', () => {
+  const service = button.dataset.service;
+  const text = `Olá, Camila! Gostaria de agendar o serviço: ${service}.`;
+  window.open(`https://wa.me/5561991581175?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+}));
 
 const links = [...document.querySelectorAll('.mobile-link')];
 const sections = links.map(link => document.getElementById(link.dataset.section)).filter(Boolean);
@@ -33,5 +27,5 @@ const observer = new IntersectionObserver(entries => {
     if (active) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
-}, { rootMargin: '-25% 0px -55% 0px', threshold: [0, .2, .5] });
+}, { rootMargin: '-22% 0px -58% 0px', threshold: [0, .2, .5] });
 sections.forEach(section => observer.observe(section));

@@ -4,6 +4,9 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 .logo-lockup,.intro-mark{background:transparent;box-shadow:none}
+.header{background:rgba(57,38,43,.97);border-bottom-color:#92715355}
+.desktop-nav{color:#e6d7cc}
+.desktop-nav a:hover{color:#e1c394}
 
 .service-carousel-controls{display:none}
 @media(max-width:640px){

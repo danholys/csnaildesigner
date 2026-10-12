@@ -1,5 +1,31 @@
 const filters = [...document.querySelectorAll('.filter-chip')];
 const cards = [...document.querySelectorAll('.service-card')];
+const serviceGrid = document.querySelector('#service-grid');
+const serviceCurrent = document.querySelector('#service-current');
+const serviceTotal = document.querySelector('#service-total');
+const carouselArrows = [...document.querySelectorAll('.carousel-arrow')];
+
+function visibleServiceCards() {
+  return cards.filter(card => !card.hidden);
+}
+
+function updateCarouselPosition() {
+  const visibleCards = visibleServiceCards();
+  if (!visibleCards.length || !serviceCurrent || !serviceTotal) return;
+  const gridBounds = serviceGrid.getBoundingClientRect();
+  const center = gridBounds.left + serviceGrid.clientWidth / 2;
+  const index = visibleCards.reduce((closest, card, i) => {
+    const cardCenter = card.getBoundingClientRect().left + card.offsetWidth / 2;
+    const distance = Math.abs(cardCenter - center);
+    return distance < closest.distance ? { index: i, distance } : closest;
+  }, { index: 0, distance: Infinity }).index;
+  serviceCurrent.textContent = String(index + 1).padStart(2, '0');
+  serviceTotal.textContent = String(visibleCards.length).padStart(2, '0');
+  carouselArrows.forEach(button => {
+    button.disabled = button.dataset.carousel === 'prev' ? index === 0 : index === visibleCards.length - 1;
+  });
+}
+
 filters.forEach(button => button.addEventListener('click', () => {
   const category = button.dataset.filter;
   filters.forEach(filter => {
@@ -8,7 +34,34 @@ filters.forEach(button => button.addEventListener('click', () => {
     filter.setAttribute('aria-selected', String(active));
   });
   cards.forEach(card => { card.hidden = category !== 'todos' && card.dataset.category !== category; });
+  serviceGrid.scrollTo({ left: 0, behavior: 'smooth' });
+  updateCarouselPosition();
 }));
+
+carouselArrows.forEach(button => button.addEventListener('click', () => {
+  const visibleCards = visibleServiceCards();
+  if (!visibleCards.length) return;
+  const gridBounds = serviceGrid.getBoundingClientRect();
+  const center = gridBounds.left + serviceGrid.clientWidth / 2;
+  const index = visibleCards.reduce((closest, card, i) => {
+    const cardCenter = card.getBoundingClientRect().left + card.offsetWidth / 2;
+    const distance = Math.abs(cardCenter - center);
+    return distance < closest.distance ? { index: i, distance } : closest;
+  }, { index: 0, distance: Infinity }).index;
+  const nextIndex = Math.max(0, Math.min(visibleCards.length - 1, index + (button.dataset.carousel === 'next' ? 1 : -1)));
+  visibleCards[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+}));
+
+let carouselFrame = 0;
+serviceGrid.addEventListener('scroll', () => {
+  if (carouselFrame) cancelAnimationFrame(carouselFrame);
+  carouselFrame = requestAnimationFrame(() => {
+    updateCarouselPosition();
+    carouselFrame = 0;
+  });
+}, { passive: true });
+window.addEventListener('resize', updateCarouselPosition);
+updateCarouselPosition();
 
 document.querySelectorAll('.select-service').forEach(button => button.addEventListener('click', () => {
   const service = button.dataset.service;

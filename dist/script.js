@@ -114,3 +114,25 @@ if (welcomeScreen) {
     welcomeTimer = setTimeout(closeWelcome, 3550);
   }
 }
+
+const themeToggle = document.querySelector('.theme-toggle');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+const storedTheme = localStorage.getItem('cs-nails-theme');
+if (storedTheme === 'light') document.body.dataset.theme = 'light';
+function updateThemeControl() {
+  if (!themeToggle) return;
+  const dark = document.body.dataset.theme !== 'light';
+  const label = dark ? 'Ativar tema claro' : 'Ativar tema escuro';
+  themeToggle.setAttribute('aria-label', label);
+  themeToggle.title = label;
+  themeToggle.querySelector('.theme-toggle-label').textContent = dark ? 'Tema claro' : 'Tema escuro';
+  themeToggle.querySelector('.theme-toggle-icon').textContent = dark ? '☼' : '☾';
+  if (themeMeta) themeMeta.content = dark ? '#24191b' : '#f7f0eb';
+}
+updateThemeControl();
+themeToggle?.addEventListener('click', () => {
+  const nextTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.body.dataset.theme = nextTheme;
+  localStorage.setItem('cs-nails-theme', nextTheme);
+  updateThemeControl();
+});

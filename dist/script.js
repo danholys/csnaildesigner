@@ -107,7 +107,6 @@ if (welcomeScreen) {
   } else {
     document.body.classList.add('welcome-active');
     welcomeScreen.focus({ preventScroll: true });
-    enterButtons.forEach(button => button.addEventListener('click', closeWelcome));
     welcomeScreen.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeWelcome();
       if (event.key === 'Tab') event.preventDefault();

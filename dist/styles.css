@@ -7,6 +7,17 @@
 .header{background:rgba(57,38,43,.97);border-bottom-color:#92715355}
 .desktop-nav{color:#e6d7cc}
 .desktop-nav a:hover{color:#e1c394}
+.hero-image{background-image:url('assets/portfolio-hero.jpeg');border-radius:50% 50% 30% 30%/35% 35% 12% 12%}
+.gallery-track{grid-template-columns:repeat(3,minmax(0,1fr));align-items:center}
+.gallery-tile{height:360px;border-radius:48% 48% 18% 18%/36% 36% 14% 14%;background-size:cover;transition:transform .3s,box-shadow .3s}
+.gallery-tile:hover{transform:translateY(-5px);box-shadow:0 16px 28px #59373a20}
+.tile-one{background-image:url('assets/portfolio-01.jpeg')}
+.tile-two{height:395px;margin-top:-20px;border-radius:42% 42% 48% 18%/36% 36% 20% 18%;background-image:url('assets/portfolio-02.jpeg')}
+.tile-three{border-radius:48% 48% 18% 48%/38% 38% 20% 20%;background-image:url('assets/portfolio-03.jpeg')}
+.tile-four{border-radius:44% 44% 44% 18%/38% 38% 22% 18%;background-image:url('assets/portfolio-04.jpeg')}
+.tile-five{height:395px;margin-top:-20px;border-radius:50% 50% 18% 50%/40% 40% 18% 24%;background-image:url('assets/portfolio-05.jpeg')}
+.tile-six{border-radius:42% 42% 50% 18%/34% 34% 22% 18%;background-image:url('assets/portfolio-06.jpeg')}
+@media(max-width:640px){.gallery-track{grid-template-columns:none}.gallery-tile,.tile-two,.tile-five{height:310px;margin-top:0}.gallery-tile{flex:0 0 76%}}
 
 .service-carousel-controls{display:none}
 @media(max-width:640px){

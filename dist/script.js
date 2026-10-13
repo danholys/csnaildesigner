@@ -85,7 +85,6 @@ sections.forEach(section => observer.observe(section));
 
 const welcomeScreen = document.querySelector('#welcome-screen');
 if (welcomeScreen) {
-  const enterButtons = welcomeScreen.querySelectorAll('.welcome-enter, .welcome-skip');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let welcomeTimer;
   let welcomeCloseTimer;
@@ -111,19 +110,8 @@ if (welcomeScreen) {
     enterButtons.forEach(button => button.addEventListener('click', closeWelcome));
     welcomeScreen.addEventListener('keydown', event => {
       if (event.key === 'Escape') closeWelcome();
-      if (event.key === 'Tab') {
-        const controls = [...welcomeScreen.querySelectorAll('button:not([disabled])')];
-        const first = controls[0];
-        const last = controls[controls.length - 1];
-        if (event.shiftKey && (document.activeElement === first || document.activeElement === welcomeScreen)) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === welcomeScreen)) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
+      if (event.key === 'Tab') event.preventDefault();
     });
-    welcomeTimer = setTimeout(closeWelcome, 2200);
+    welcomeTimer = setTimeout(closeWelcome, 3550);
   }
 }

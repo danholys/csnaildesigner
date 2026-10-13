@@ -65,7 +65,7 @@ updateCarouselPosition();
 
 document.querySelectorAll('.select-service').forEach(button => button.addEventListener('click', () => {
   const service = button.dataset.service;
-  const text = `Olá, Camila! Gostaria de agendar o serviço: ${service}.`;
+  const text = `Olá! Gostaria de agendar o serviço: ${service}.`;
   window.open(`https://wa.me/5561991581175?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 }));
 
